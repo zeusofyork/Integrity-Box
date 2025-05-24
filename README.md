@@ -39,7 +39,7 @@
 6. ![Screenshot 6](https://raw.githubusercontent.com/MeowDump/Integrity-Box/main/DUMP/6.gif)
 7. ![Screenshot 7](https://raw.githubusercontent.com/MeowDump/Integrity-Box/main/DUMP/7.gif)
 8. ![Screenshot 8](https://raw.githubusercontent.com/MeowDump/Integrity-Box/main/DUMP/8.png)
-9. ![Screenshot 9](https://raw.githubusercontent.com/MeowDump/Integrity-Box/main/DUMP/9.png)
+9. ![Screenshot 9](https://raw.githubusercontent.com/MeowDump/Integrity-Box/main/DUMP/9.jpg)
 10. ![Screenshot 10](https://raw.githubusercontent.com/MeowDump/Integrity-Box/main/DUMP/10.png)
 
 ## 📊 **Project Stats**
