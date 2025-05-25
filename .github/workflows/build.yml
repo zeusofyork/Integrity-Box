@@ -1,0 +1,36 @@
+name: Build Magisk Module
+
+on:
+  push:
+    branches:
+      - main
+  release:
+    types: [created]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up output file name
+      run: |
+        echo "MODULE_ZIP=Integrity-Box-$(date +%Y%m%d%H%M%S).zip" >> $GITHUB_ENV
+
+    - name: Zip repository contents into Magisk module
+      run: |
+        zip -r $MODULE_ZIP . -x ".git/*" ".github/*" "*.zip"
+
+    - name: Upload zip as artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ env.MODULE_ZIP }}
+        path: ${{ env.MODULE_ZIP }}
+
+    - name: Upload to release (if applicable)
+      if: github.event_name == 'release'
+      uses: softprops/action-gh-release@v1
+      with:
+        files: ${{ env.MODULE_ZIP }}
