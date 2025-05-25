@@ -1,0 +1,47 @@
+name: Build & Release Magisk Module
+
+on:
+  workflow_dispatch:
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0  # Required to fetch tags
+
+    - name: Get latest tag version
+      id: get_tag
+      run: |
+        latest_tag=$(git tag --sort=-creatordate | grep -E '^[0-9]+\.[0-9]+$' | head -n 1)
+        if [ -z "$latest_tag" ]; then
+          new_tag="1.00"
+        else
+          new_tag=$(awk -F. '{printf "%.2f", $1 + ($2 + 5)/100}' <<< "$latest_tag")
+        fi
+        echo "latest=$latest_tag" >> $GITHUB_OUTPUT
+        echo "next=$new_tag" >> $GITHUB_OUTPUT
+
+    - name: Set environment variable
+      run: echo "MODULE_ZIP=Integrity-Box-${{ steps.get_tag.outputs.next }}.zip" >> $GITHUB_ENV
+
+    - name: Create Magisk ZIP
+      run: |
+        zip -r $MODULE_ZIP . -x ".git/*" ".github/*" "*.zip"
+
+    - name: Create new tag
+      run: |
+        git config user.name "github-actions"
+        git config user.email "github-actions@github.com"
+        git tag -a "${{ steps.get_tag.outputs.next }}" -m "Release ${{ steps.get_tag.outputs.next }}"
+        git push origin "${{ steps.get_tag.outputs.next }}"
+
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: ${{ steps.get_tag.outputs.next }}
+        name: Release ${{ steps.get_tag.outputs.next }}
+        files: ${{ env.MODULE_ZIP }}
