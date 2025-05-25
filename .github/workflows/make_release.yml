@@ -32,11 +32,11 @@ jobs:
       run: |
         zip -r "$MODULE_ZIP" . -x ".git/*" ".github/*" "*.zip"
 
-    - name: Upload artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: Integrity-Box
-        path: ${{ env.MODULE_ZIP }}
+   # - name: Upload artifact
+     # uses: actions/upload-artifact@v4
+   #   with:
+     #   name: Integrity-Box
+      #  path: ${{ env.MODULE_ZIP }}
 
     - name: Create Git tag
       run: |
